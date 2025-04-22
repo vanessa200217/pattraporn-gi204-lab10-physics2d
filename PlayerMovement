@@ -1,0 +1,40 @@
+using UnityEngine;
+
+public class PlayerMovement : MonoBehaviour
+{
+    public float Speed;
+    float move;
+
+    public float JumpForce;
+    public bool IsJumping;
+    
+    Rigidbody2D rb2d;
+    
+    void Start()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
+    {
+        move = Input.GetAxis("Horizontal");
+    }
+
+    void FixedUpdate()
+    {
+        rb2d.velocity = new Vector2(move * Speed, rb2d.velocity.y);
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, JumpForce);
+            
+            Debug.Log("Jump");
+        }
+    }
+    
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+            IsJumping = true;
+    }
+}
